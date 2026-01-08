@@ -1,0 +1,18 @@
+server:
+  port: 0   # allows horizontal scaling
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/order_db
+    username: postgres
+    password: postgres
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+kafka:
+  topic:
+    order-created: order.created.v1
+
+
