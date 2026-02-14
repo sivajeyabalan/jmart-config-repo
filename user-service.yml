@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/userdb
-    username: useruser
-    password: userpass
+    url: jdbc:postgresql://${POSTGRES_HOST:postgres-user-db}:${POSTGRES_PORT:5432}/userdb
+    username: ${POSTGRES_USER:useruser}
+    password: ${POSTGRES_PASSWORD:userpass}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
@@ -26,6 +26,16 @@ spring:
 
 server:
   port: 8082
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://service-registry:8761/eureka/}
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 30
 
 management:
   endpoints:

@@ -1,7 +1,7 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/productdb
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://mongodb:27017/productdb}
       auto-index-creation: true
 
 server:
