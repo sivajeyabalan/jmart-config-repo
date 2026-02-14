@@ -13,6 +13,14 @@ management:
   endpoint:
     health:
       show-details: always
+  endpoint:
+    env:
+      enabled: true # Added to enable environment endpoint
+
+logging:
+  level:
+    org.springframework.cloud.config: DEBUG
+    org.springframework: DEBUG # Added to enable debug logging for Spring
 
 eureka:
   client:
@@ -22,8 +30,3 @@ eureka:
     fetch-registry: true
   instance:
     prefer-ip-address: true
-
-logging:
-  level:
-    org.springframework.cloud.config: DEBUG
-

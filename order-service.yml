@@ -1,16 +1,70 @@
-server:
-  port: 0   # allows horizontal scaling
-
 spring:
+  application:
+    name: order-service
+
   datasource:
-    url: jdbc:postgresql://localhost:5432/order_db
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:5432/orderdb
+    username: ${POSTGRES_USER:orderuser}
+    password: ${POSTGRES_PASSWORD:orderpass}
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        jdbc:
+          batch_size: 20
+        order_inserts: true
+        order_updates: true
 
+server:
+  port: 8085
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka/}
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 30
+    hostname: ${HOSTNAME:localhost}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+logging:
+  level:
+    com.ecommerce.orderservice: INFO
+    org.springframework.web: INFO
+    org.hibernate.SQL: WARN
+    org.hibernate.type.descriptor.sql.BasicBinder: WARN
+  pattern:
+    console: '%d{yyyy-MM-dd HH:mm:ss} - %msg%n'
+
+# Order Service specific configuration
+order:
+  tax-rate: ${TAX_RATE:0.08}  # 8% default tax rate
+  shipping-fee: ${SHIPPING_FEE:5.99}  # Default shipping fee
+  product-service:
+    url: ${PRODUCT_SERVICE_URL:http://product-service}
+
+# Future Kafka configuration
 kafka:
   topic:
     order-created: order.created.v1

@@ -1,0 +1,25 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/productdb
+      auto-index-creation: true
+
+server:
+  port: 8083
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.ecommerce.productservice: INFO
+    org.springframework.web: WARN
+    org.springframework.data.mongodb: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
