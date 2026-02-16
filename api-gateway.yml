@@ -21,6 +21,21 @@ spring:
           filters:
             - RewritePath=/auth/(?<segment>.*), /api/auth/$\{segment}
 
+        - id: user-service-route
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/api/users/**
+
+        - id: product-service-route
+          uri: lb://PRODUCT-SERVICE
+          predicates:
+            - Path=/api/products/**
+
+        - id: order-service-route
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/api/orders/**
+
       globalcors:
         corsConfigurations:
           '[/**]':
@@ -45,10 +60,16 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,metrics,gateway
+        include: health,info,metrics,gateway,prometheus
   endpoint:
     health:
       show-details: always
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://zipkin:9411/api/v2/spans
 
 eureka:
   client:
